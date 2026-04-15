@@ -30,7 +30,7 @@ def get_symmetry_dataset(atoms, symprec=default_symprec):
 
     dataset = spg.get_symmetry_dataset(to_spglib_cell(atoms), symprec=symprec)
 
-    uwcks, count = np.unique(dataset["wyckoffs"], return_counts=True)
+    uwcks, count = np.unique(dataset.select("wyckoffs"), return_counts=True)
     dataset.select("wyckoffs_unique") = [(w, c) for (w, c) in zip(uwcks, count)]
 
     ats, count = np.unique(dataset.select("equivalent_atoms"), return_counts=True)
