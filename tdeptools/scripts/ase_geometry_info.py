@@ -28,13 +28,14 @@ def to_spglib_cell(atoms):
 def get_symmetry_dataset(atoms, symprec=default_symprec):
     """Get spglib symmetry dataset"""
 
-    dataset = spg.get_symmetry_dataset(to_spglib_cell(atoms), symprec=symprec)
+    dataset1 = spg.get_symmetry_dataset(to_spglib_cell(atoms), symprec=symprec)
+    dataset = dict(dataset1)
+    
+    uwcks, count = np.unique(dataset["wyckoffs", return_counts=True)
+    dataset["wyckoffs_unique"] = [(w, c) for (w, c) in zip(uwcks, count)]
 
-    uwcks, count = np.unique(dataset.select("wyckoffs"), return_counts=True)
-    dataset.select("wyckoffs_unique") = [(w, c) for (w, c) in zip(uwcks, count)]
-
-    ats, count = np.unique(dataset.select("equivalent_atoms"), return_counts=True)
-    dataset("equivalent_atoms_unique") = [(a, c) for (a, c) in zip(ats, count)]
+    ats, count = np.unique(dataset["equivalent_atoms"], return_counts=True)
+    dataset["equivalent_atoms_unique"] = [(a, c) for (a, c) in zip(ats, count)]
 
     return namedtuple("symmetry_dataset", dataset.keys())(**dataset)
 
